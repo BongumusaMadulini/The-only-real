@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCalculator</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            width: 400px;
+            height: 400px;
+            border: 2px solid black;
+            margin: 70px auto;
+            position: relative; /* Added for positioning the on/off button */
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 0;
+            background-color: rgb(45, 114, 89);
+            color: white;
+        }
+        .screen{
+            height: 100px;
+            background-color: rgb(45, 114, 89);
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Adjusted to center align */
+            padding: 0 10px; /* Added padding for spacing */
+        }
+        #display{
+            width: 240px;
+            height: 80px;
+            border: none;
+            outline: none;
+            font-size: 32px;
+            text-align: right;
+        }
+        #clear, #power{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 11px;
+            color: white;
+            background-color: rgb(3, 8, 3);
+            margin: 5px; /* Added margin for spacing */
+        }
+        #power{
+            align-self: flex-start; /* Adjusted position */
+        }
+        #clear {
+            align-self: flex-end; /* Adjusted position */
+        }
+        .keypad{
+            height: 300px;
+        }
+        .row{
+            height: 25%;
+        }
+        .key{
+            width: 25%;
+            height: 100%;
+            font-size: 24px;
+            color: white;
+            background-color: rgb(10, 98, 26);
+            float: left;
+        }
+        .key:hover{
+            background-color: rgb(7, 20, 13);
+        }
+        .key:active{
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Bongumusa's Calculator</div> <!-- Added title -->
+        <div class="screen">
+            <input id="display" type="text" readonly>
+        </div>
+        <button id="power">On</button> <!-- Added on/off button -->
+        <button id="clear">Clear</button>
+        <div class="keypad">
+            <div class="row">
+                <button class="key" value="1">1</button>
+                <button class="key" value="2">2</button>
+                <button class="key" value="3">3</button>
+                <button class="key" value="+">+</button>
+            </div>
+            <div class="row">
+                <button class="key" value="4">4</button>
+                <button class="key" value="5">5</button>
+                <button class="key" value="6">6</button>
+                <button class="key" value="-">-</button>
+            </div>
+            <div class="row">
+                <button class="key" value="7">7</button>
+                <button class="key" value="8">8</button>
+                <button class="key" value="9">9</button>
+                <button class="key" value="*">*</button>
+            </div>
+            <div class="row">
+                <button class="key" value="0">0</button>
+                <button class="key" value=".">.</button>
+                <button class="key" value="=">=</button>
+                <button class="key" value="/">/</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById("display");
+        const clear = document.getElementById("clear");
+        const power = document.getElementById("power"); // Added power button
+
+        const keys = document.querySelectorAll(".key");
+
+        keys.forEach(key => {
+            key.addEventListener("click", function () {
+                if (!calculatorOn) return; // Check if calculator is on
+                const value = this.value;
+
+                if (value === "=") {
+                    const result = eval(display.value);
+                    display.value = result;
+                } else {
+                    display.value += value;
+                }
+
+            });
+        });
+
+        clear.addEventListener("click", function () {
+            if (!calculatorOn) return; // Check if calculator is on
+            display.value = "";
+        });
+
+        let calculatorOn = true; // Initial state
+
+        power.addEventListener("click", function () {
+            calculatorOn = !calculatorOn; // Toggle on/off state
+            if (calculatorOn) {
+                power.textContent = "On";
+                clear.disabled = false; // Enable clear button
+                keys.forEach(key => key.disabled = false); // Enable keys
+            } else {
+                power.textContent = "Off";
+                display.value = ""; // Clear display
+                clear.disabled = true; // Disable clear button
+                keys.forEach(key => key.disabled = true); // Disable keys
+            } 
+            
+        });
+    </script>
+</body>
+</html>
